@@ -29,9 +29,16 @@
 }
 
 .smallbox{
-    height: 100px;
+    height: 250px;
     width: 150px;
     border:2px #000 solid;
+    overflow: hidden;
+}
+
+.smallbox img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .formbox1{
