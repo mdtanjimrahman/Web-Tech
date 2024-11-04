@@ -1,5 +1,5 @@
 body{
-    background-color: #504d64;
+    background-color: #212025;
 }
 
 h1{
@@ -28,8 +28,9 @@ h1{
 
 .div03{
     display: flex;
+    height: auto;
     flex-direction: row;
-    align-items: center;
+    align-items: auto;
     justify-content: center;
     gap: 15px;
 }
@@ -62,9 +63,9 @@ h1{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 7px;
     padding: 1px;
-    height: 100px;
+    height: auto;
     width: 330px;
     border:2px #bebebe solid;
     border-radius: 10px;    
@@ -72,15 +73,22 @@ h1{
 }
 
 .textbox{
-    height: 10px;
     width: 80%;
-    padding: 8px;
+    padding: 7px;
+    margin: 7px 18px;
     font-size: 12px;
     border: 2px solid #ccc;
     border-radius: 5px;
-    background-color: #504d64;      
+    background-color: #212025;      
     color: #e0e0e0;                 
     outline: none;
+    
+}
+
+.labeling{
+    font-weight: bold;
+    color: #ffffff;
+    padding-left: 8px;
 }
 
 .textbox::placeholder{
@@ -98,7 +106,77 @@ h1{
 p{
     text-align: center;
     font-weight: bold;
-    font-size: 1.7em;
+    font-size: 1.2em;
     font-family: Arial, Helvetica, sans-serif;
     color: burlywood;
+}
+
+.heading{
+    text-align: center;
+    color: #ffffff;
+}
+
+.label1{
+    color: #ffffff;
+}
+
+#book-select{
+    width:86%;
+    padding: 4px;
+    margin: 7px 18px;
+    background-color: #212025;
+    color: #cecece;
+    border: 2px solid #cecece;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+#borrow-date{
+    text-align: center;
+    padding: 4px;
+    margin: 7px 18px;
+    background-color: #212025;
+    color: #cecece;
+    border: 2px solid #cecece;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+#return-date{
+    text-align: center;
+    padding: 4px;
+    margin: 7px 18px;
+    background-color: #212025;
+    color: #cecece;
+    border: 2px solid #cecece;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.checkbox-group{
+    display: flex;
+    gap: 50px;
+    margin: 7px 10px 10px;
+    align-items: center;
+}
+
+.checkbox-group label{
+    color: #ffffff;
+}
+
+.submit{
+    font-weight: bold;
+    width: 50%;
+    padding: 10px;
+    background-color: #075500;
+    color: #e0e0e0;
+    font-size: 16px;
+    border: 1px #ffffff solid;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit:hover{
+    background-color: #66420d;
 }
