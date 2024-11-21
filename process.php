@@ -44,6 +44,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
 
 
+    // Cookie Check Logic
+    $cookieName = $books; // Cookie name is the book title
+    if (isset($_COOKIE[$cookieName])) 
+    {
+        if ($_COOKIE[$cookieName] === $studentName) 
+        {
+            echo "<h3 style='color: red;'>You're not allowed to Loan the same book again.</h3>";
+            return;
+        }
+    }
+    // Set the cookie with the book title as the name and student name as the value
+    setcookie($cookieName, $studentName, time() + (20), "/"); // Cookie expires in 20 seconds
+
+
 
     echo "<h2>Form Data Submitted</h2>";
     echo "<p><strong>Student Name:</strong> $studentName</p>";
@@ -60,6 +74,6 @@ else
     echo "No data submitted.";
 }
 
-    ?>
+?>
 </body>
 </html>
