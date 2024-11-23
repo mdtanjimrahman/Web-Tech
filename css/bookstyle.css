@@ -42,7 +42,8 @@ body {
         "paid-submit";
 }
 
-.smaller-form-container {
+.small-form-container {
+    margin-top: 30%;
     width: 250px;
     padding: 15px;
     border: 1px solid #ccc;
@@ -77,6 +78,7 @@ h2 {
     width:92%;
     padding: 4px;
     margin: 7px 18px;
+    font-size: 16px;
     background-color: #f9f9f9;
     border: 2px solid #cecece;
     border-radius: 7px;

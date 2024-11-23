@@ -7,58 +7,71 @@
 </head>
 <body>
     <?php
+session_start(); // Start the session
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") 
-{
-    
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $studentName = ($_POST['studentName'] ?? '');
     $studentID = ($_POST['studentID'] ?? '');
+    $studentmail = ($_POST['studentmail'] ?? '');
     $bookSelected = ($_POST['books'] ?? '');
-    $borrowDate = ($_POST['borrowdate'] ?? '');
-    $token = ($_POST['token'] ?? '');
-    $returnDate = ($_POST['returndate'] ?? '');
+    $borrowDate = ($_POST['borrowDate'] ?? '');
+    $returnDate = ($_POST['returnDate'] ?? '');
     $fees = ($_POST['fees'] ?? '');
+    $token = ($_POST['token'] ?? '');
     $paidStatus = ($_POST['paid'] ?? '');
 
-    if (!preg_match("/[A-za-z\-]/", $_POST['studentName']))
-    {
+    // Validation for studentName
+    if (!preg_match("/^[A-Za-z\- ]+$/", $studentName)) {
         echo "Name is Invalid";
         return;
     }
 
-    if (!preg_match("/\d{2}-\d{5}-\d{1}/", $_POST['studentID']))
-    {
+    // Validation for studentID
+    if (!preg_match("/^\d{2}-\d{5}-\d{1}$/", $studentID)) {
         echo "Student ID is Invalid";
         return;
     }
 
-    $date1 = new DateTime($borrowDate);
-    $date2 = new DateTime($returnDate);
+    // Validate borrow and return dates for the 10-day rule
+    $date1 = strtotime($borrowDate);
+    $date2 = strtotime($returnDate);
+    $daysDifference = ($date2 - $date1) / 86400; // Calculate difference in days
 
-    $interval = date_diff($date1, $date2);
-
-    if ( ($interval->format('%d')) >10 )
-    {
+    if ($daysDifference > 10) {
         echo "Can't Borrow a Book for more than 10 days";
         return;
     }
 
-
-    // Cookie Check Logic
-    $cookieName = $books; // Cookie name is the book title
-    if (isset($_COOKIE[$cookieName])) 
-    {
-        if ($_COOKIE[$cookieName] === $studentName) 
-        {
-            echo "<h3 style='color: red;'>You're not allowed to Loan the same book again.</h3>";
-            return;
-        }
+    // Session management
+    if (!isset($_SESSION['studentID'])) {
+        $_SESSION['studentID'] = $studentID; // Set the session for the student
+        $_SESSION['start_time'] = time(); // Record session start time
     }
-    // Set the cookie with the book title as the name and student name as the value
-    setcookie($cookieName, $studentName, time() + (20), "/"); // Cookie expires in 20 seconds
 
+    // Check session validity (30 seconds timeout)
+    if ($_SESSION['studentID'] === $studentID && (time() - $_SESSION['start_time']) <= 50) 
+    {
+        // Check for the book cookie
+        if (isset($_COOKIE['loaned_book']) && $_COOKIE['loaned_book'] === $bookSelected) 
+        {
+            echo "This book has already been loaned. Please choose another book.";
+        } 
+        else 
+        {
+            // Set a cookie for the loaned book valid for 10 seconds
+            setcookie('loaned_book', $bookSelected, time() + 10);
+            echo "The book '$bookSelected' has been successfully loaned.<br>";
+        }
+    } 
+    else 
+    {
+        // Session expired or invalid student ID
+        echo "Session expired or invalid student ID. Please start a new session.";
+        session_destroy();
+        return;
+    }
 
-
+    // Display submitted data
     echo "<h2>Form Data Submitted</h2>";
     echo "<p><strong>Student Name:</strong> $studentName</p>";
     echo "<p><strong>Student ID:</strong> $studentID</p>";
@@ -73,7 +86,10 @@ else
 {
     echo "No data submitted.";
 }
-
 ?>
+<br>
+<form method="post" action="process.php">
+    <button type="submit" name="refresh">Refresh</button>
+</form>
 </body>
 </html>

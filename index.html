@@ -16,7 +16,8 @@
 
 <div class="form-wrapper">
     <div class="form-container">
-      <h3>ID: 22-47647-2</h3>
+        <img src="assets/id.png" class="myID">
+        
         <h2>Borrow Form</h2>
         <form action="process.php" method="POST">
             <div class="form-group" id="name-group">
@@ -29,21 +30,21 @@
             </div>
             <div class="form-group" id="studentmail-group">
                 <label for="studentmail">Student E-mail:</label>
-                <input type="email" id="studentmail" name="studentmail" required>
+                <input type="text" id="studentmail" name="studentmail" required>
             </div>
             <div class="form-group" id="bookTitle-group">
                 <label class="bookTitle">Choose a Book:</label>
                 <select id="book-select" name="books">
-                  <option value="book1">The Great Gatsby</option>
-                  <option value="book2">To Kill a Mockingbird</option>
-                  <option value="book3">1984</option>
-                  <option value="book4">Pride and Prejudice</option>
-                  <option value="book5">The Catcher in the Rye</option>
-                  <option value="book6">Moby-Dick</option>
-                  <option value="book7">War and Peace</option>
-                  <option value="book8">The Odyssey</option>
-                  <option value="book9">Crime and Punishment</option>
-                  <option value="book10">Jane Eyre</option>
+                  <option value="The Great Gatsby">The Great Gatsby</option>
+                  <option value="To Kill a Mockingbird">To Kill a Mockingbird</option>
+                  <option value="1984">1984</option>
+                  <option value="Pride and Prejudice">Pride and Prejudice</option>
+                  <option value="The Catcher in the Rye">The Catcher in the Rye</option>
+                  <option value="Moby-Wick">Moby-Wick</option>
+                  <option value="War and Peace">War and Peace</option>
+                  <option value="The Odyssey">The Odyssey</option>
+                  <option value="Crime and Punishment">Crime and Punishment</option>
+                  <option value="Jane Eyre">Jane Eyre</option>
               </select>
             </div>
             <div id="dates">
@@ -59,7 +60,7 @@
             <div id="fees-token">
                 <div class="form-group" id="fees-group">
                     <label for="fees">Fees:</label>
-                    <input type="number" id="fees" name="fees" step="0.01" required>
+                    <input type="text" id="fees" name="fees" required>
                 </div>
                 <div class="form-group" id="token-group">
                     <label for="token">Token:</label>
@@ -77,7 +78,7 @@
         </form>
     </div>
 
-    <div class="smaller-form-container">
+    <div class="small-form-container">
         <h2>Book Details</h2>
         <form action="process_book.php" method="POST">
             <div class="form-group">
