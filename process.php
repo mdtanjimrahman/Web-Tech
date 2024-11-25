@@ -45,18 +45,22 @@
             color: #000;
         }
 
-        .message {
+        .message-success {
             text-align: center;
             padding: 10px;
             font-size: 18px;
             font-weight: bold;
             color: #fff;
             border-radius: 5px;
-        }
-        .message.success {
             background-color: #28a745;
         }
-        .message.error {
+        .message-error {
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 5px;
             background-color: #dc3545;
         }
 </style>
@@ -84,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validation for studentID
     if (!preg_match("/^\d{2}-\d{5}-\d{1}$/", $studentID)) {
-        echo "<div class='message error'>Student ID is Invalid</div>";
+        echo "<div class='message-error'>Student ID is Invalid</div>";
         return;
     }
 
@@ -94,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $daysDifference = ($date2 - $date1) / 86400; // Calculate difference in days
 
     if ($daysDifference > 10) {
-        echo "<div class='message error'>Can't Borrow a Book for more than 10 days";
+        echo "<div class='message-error'>Can't Borrow a Book for more than 10 days";
         return;
     }
 
@@ -105,14 +109,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if the cookie value matches the student name
         if ($_COOKIE[$cookieName] === $studentName) 
         {
-            echo "<div class='message error'>You're not allowed to borrow the same book again within 10 days</div>";
+            echo "<div class='message-error'>You're not allowed to borrow the same book again within 10 days</div>";
             return;
         }
     }
 
     // Set the cookie to expire in 10 days
-    setcookie($cookieName, $studentName, time() + (10), "/");
-    echo "<div class='message success'>You're allowed to borrow this book</div>";
+    setcookie($cookieName, $studentName, time() + (30), "/");
+    echo "<div class='message-success'>You're allowed to borrow this book</div>";
 
     // Display submitted data
     echo "<div class='form-details'>";
@@ -130,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } 
 else 
 {
-    echo "No data submitted.";
+    echo "<div class='message-error'>No data submitted</div>";
 }
 ?>
 </div>
