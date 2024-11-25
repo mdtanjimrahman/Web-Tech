@@ -5,30 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e1e4d;
+        }
+
+        .form-details {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .form-details p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 5px;
+        }
+        .message.success {
+            background-color: #28a745;
+        }
+        .message.error {
+            background-color: #dc3545;
+        }
+</style>
+
 <body>
-    <?php
-session_start(); // Start the session
+    <div class="container">
+<?php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $studentName = ($_POST['studentName'] ?? '');
-    $studentID = ($_POST['studentID'] ?? '');
-    $studentmail = ($_POST['studentmail'] ?? '');
-    $bookSelected = ($_POST['books'] ?? '');
-    $borrowDate = ($_POST['borrowDate'] ?? '');
-    $returnDate = ($_POST['returnDate'] ?? '');
-    $fees = ($_POST['fees'] ?? '');
-    $token = ($_POST['token'] ?? '');
-    $paidStatus = ($_POST['paid'] ?? '');
+    $studentName =   $_POST['studentName'];
+    $studentID =     $_POST['studentID'];
+    $studentmail =   $_POST['studentmail'];
+    $bookSelected =  $_POST['books'];
+    $borrowDate =    $_POST['borrowDate'];
+    $returnDate =    $_POST['returnDate'];
+    $fees =          $_POST['fees'];
+    $token =         $_POST['token'];
+    $paidStatus =    $_POST['paid'];
 
     // Validation for studentName
     if (!preg_match("/^[A-Za-z\- ]+$/", $studentName)) {
-        echo "Name is Invalid";
+        echo "<div class='message error'>Name is Invalid</div>";
         return;
     }
 
     // Validation for studentID
     if (!preg_match("/^\d{2}-\d{5}-\d{1}$/", $studentID)) {
-        echo "Student ID is Invalid";
+        echo "<div class='message error'>Student ID is Invalid</div>";
         return;
     }
 
@@ -38,41 +94,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $daysDifference = ($date2 - $date1) / 86400; // Calculate difference in days
 
     if ($daysDifference > 10) {
-        echo "Can't Borrow a Book for more than 10 days";
+        echo "<div class='message error'>Can't Borrow a Book for more than 10 days";
         return;
     }
 
-    // Session management
-    if (!isset($_SESSION['studentID'])) {
-        $_SESSION['studentID'] = $studentID; // Set the session for the student
-        $_SESSION['start_time'] = time(); // Record session start time
-    }
-
-    // Check session validity (30 seconds timeout)
-    if ($_SESSION['studentID'] === $studentID && (time() - $_SESSION['start_time']) <= 50) 
+    $cookieName = str_replace(['=', ',', ';', ' ', "\t", "\r", "\n", "\013", "\014"], '_', $bookSelected);
+    // Check if the cookie exists
+    if (isset($_COOKIE[$cookieName])) 
     {
-        // Check for the book cookie
-        if (isset($_COOKIE['loaned_book']) && $_COOKIE['loaned_book'] === $bookSelected) 
+        // Check if the cookie value matches the student name
+        if ($_COOKIE[$cookieName] === $studentName) 
         {
-            echo "This book has already been loaned. Please choose another book.";
-        } 
-        else 
-        {
-            // Set a cookie for the loaned book valid for 10 seconds
-            setcookie('loaned_book', $bookSelected, time() + 10);
-            echo "The book '$bookSelected' has been successfully loaned.<br>";
+            echo "<div class='message error'>You're not allowed to borrow the same book again within 10 days</div>";
+            return;
         }
-    } 
-    else 
-    {
-        // Session expired or invalid student ID
-        echo "Session expired or invalid student ID. Please start a new session.";
-        session_destroy();
-        return;
     }
+
+    // Set the cookie to expire in 10 days
+    setcookie($cookieName, $studentName, time() + (10), "/");
+    echo "<div class='message success'>You're allowed to borrow this book</div>";
 
     // Display submitted data
-    echo "<h2>Form Data Submitted</h2>";
+    echo "<div class='form-details'>";
+    echo "<h2>Reciept</h2>";
     echo "<p><strong>Student Name:</strong> $studentName</p>";
     echo "<p><strong>Student ID:</strong> $studentID</p>";
     echo "<p><strong>Book Selected:</strong> $bookSelected</p>";
@@ -81,15 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<p><strong>Return Date:</strong> $returnDate</p>";
     echo "<p><strong>Fees:</strong> $fees</p>";
     echo "<p><strong>Paid Status:</strong> $paidStatus</p>";
+    echo "</div>";
+    return;
 } 
 else 
 {
     echo "No data submitted.";
 }
 ?>
+</div>
 <br>
-<form method="post" action="process.php">
-    <button type="submit" name="refresh">Refresh</button>
-</form>
 </body>
 </html>
