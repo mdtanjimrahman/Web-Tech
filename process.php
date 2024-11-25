@@ -98,7 +98,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $daysDifference = ($date2 - $date1) / 86400; // Calculate difference in days
 
     if ($daysDifference > 10) {
-        echo "<div class='message-error'>Can't Borrow a Book for more than 10 days";
+        echo "<div class='message-error'>Can't Borrow a Book for more than 10 days</div>";
+        return;
+    }
+
+    if($daysDifference == 0)
+    {
+        echo "<div class='message-error'>Can't Borrow and Return Book on Same day</div>";
         return;
     }
 
