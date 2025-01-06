@@ -11,10 +11,57 @@
     <img src="assets/myid.png" class="myID">
 
     <div class="div01">
-      <div class="bigbox"></div>
-      <div class="bigbox"></div>
-      <div class="bigbox"></div>
-      <div class="bigbox"></div>
+      <div class="bigbox1"></div>
+      <div class="bigbox2"></div>
+      <div class="bigbox3">
+
+        <div class="left" id="unused-tokens">
+            <h4>Tokens</h4>
+            <ul>
+                <?php
+                $tokenFile = "./token.json";
+                if (file_exists($tokenFile)) {
+                    $jsonData = json_decode(file_get_contents($tokenFile), true);
+
+                    if (isset($jsonData[0]['token'])) 
+                    {
+                        foreach ($jsonData[0]['token'] as $token) 
+                            echo "<li>Token: $token</li>";
+                    } 
+                    else 
+                        echo "<li>No tokens found in the JSON file.</li>";
+                    
+                } 
+                else 
+                    echo "<li>JSON file not found.</li>";
+                
+                ?>
+            </ul>
+        </div>
+
+        <div class="right" id="used-tokens">
+            <h4>Used Tokens</h4>
+            <ul>
+                <?php
+                if (file_exists($tokenFile)) {
+                    $jsonData = json_decode(file_get_contents($tokenFile), true);
+
+                    if (isset($jsonData[0]['usedToken'])) 
+                    {
+                        foreach ($jsonData[0]['usedToken'] as $token) 
+                            echo "<li>Token: $token</li>";
+                    } 
+                    else 
+                        echo "<li>No tokens found in the JSON file.</li>";
+                    
+                } 
+                else 
+                    echo "<li>JSON file not found.</li>";
+                
+                ?>
+            </ul>
+        </div>
+      </div>
 
       <div class="smallbox">
         <img src="assets/avengerBook.jpg">

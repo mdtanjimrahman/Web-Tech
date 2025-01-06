@@ -151,12 +151,19 @@ h1{
     gap: 20px;
 }
 
-.bigbox{
-    height: 100px;
+.bigbox1, .bigbox2, .bigbox3{
+    display: flex;
+    justify-content: space-between;
+    height: auto;
     width: 500px;
     border:2px #bebebe solid;
     border-radius: 10px;
     box-shadow: 2px 2px 7px 2px;
+}
+
+
+.token{
+    margin: 5px 0;
 }
 
 .smallbox{
@@ -223,3 +230,5 @@ h1{
 .myID{
     padding-left: 80ex;
 }
+
+
